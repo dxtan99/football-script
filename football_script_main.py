@@ -7,8 +7,8 @@ def main():
     menu = {}
     menu['1'] = "Generate Random Play Script"
     menu['2'] = "Generate Play Script by Play Style"
-    menu['3'] = "Placeholder"
-    menu['4'] = "Exit"
+    menu['3'] = "Exit"
+    #menu['4'] = "Exit"
 
     while True:
 
@@ -34,7 +34,7 @@ def main():
             random_script.style_script()
             continue
 
-        elif selection == '4' or selection == 'q' or selection == 'Q':
+        elif selection == '3' or selection == 'q' or selection == 'Q':
             
             os.system('clear')
             break

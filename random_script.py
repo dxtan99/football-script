@@ -1,19 +1,6 @@
 import os
 import random
-
-#Idea: Make 3 lists that each contain the different play categories: Run, Pass, Option. Within those lists,
-#you could have the types of runs, types of passes, types of options, etc.
-#The program would first pick number between 1 and 3 to decide if it's run/pass/option then randomly choose out of that list.
-#All of this is in a loop with a counter for the number of plays selected.
-
-#run list: inside, outside, pitch, counter, draw, fb run, qb run
-#pass list: quick, standard, shotgun, play action, screen
-#option list: read, speed, inverted veer, shovel, load, triple, QB slot, midline
-
-playTypeList = ['Run', 'Pass', 'Option']
-runList = ['Inside', 'Outside', 'Pitch', 'Counter', 'Draw', 'FB run']
-passList = ['Quick', 'Standard', 'Shotgun', 'Play Action', 'Screen']
-optionList = ['Read', 'Speed', 'Inverted Veer', 'Shovel', 'Load', 'Triple', 'QB Slot', 'Midline']
+import constants
 
 def random_script():
 
@@ -36,27 +23,27 @@ def random_script():
 			while counter < num + 1:
 
 				playType_selection = random.randrange(3)
-				playType_selection_text = playTypeList[playType_selection]
+				playType_selection_text = constants.playTypeList[playType_selection]
 
 				#error checking
 				#input(playType_selection_text)
 
 				if playType_selection == 0:
 
-					play_selection = runList[random.randrange(len(runList))]
+					play_selection = constants.runList[random.randrange(len(constants.runList))]
 					#input(play_selection)
 
 				if playType_selection == 1:
 
-					play_selection = passList[random.randrange(len(passList))]
+					play_selection = constants.passList[random.randrange(len(constants.passList))]
 					#input(play_selection)
 
 				if playType_selection == 2:
 
-					play_selection = optionList[random.randrange(len(optionList))]
+					play_selection = constants.optionList[random.randrange(len(constants.optionList))]
 					#input(play_selection)
 
-				print('play #{}: {}, {}'.format(counter, playType_selection_text, play_selection))
+				print('Play #{}: {}, {}'.format(counter, playType_selection_text, play_selection))
 
 				counter = counter + 1
 
@@ -68,12 +55,28 @@ def random_script():
 
 	return
 
+
+def print_option2_title():
+
+	os.system('clear')
+	print('\t************ Playscript Generator By Style ************\n')
+
+def probability_play_selection(run_percentage, pass_percentage, option_percentage):
+	
+	#makes sure that each of the passed numbers are ints and then converts to probability
+	run_percentage_wt = int(run_percentage) * 0.1
+	pass_percentage_wt = int(pass_percentage) * 0.1
+	option_percentage_wt = int(option_percentage) * 0.1
+
+	wt_list = [run_percentage_wt, pass_percentage_wt, option_percentage_wt]
+
+	return random.choices(constants.playTypeList, wt_list)
+
 def style_script():
 
 	while True:
 
-		os.system('clear')
-		print('\t************ Random Playscript Generator ************\n')
+		print_option2_title()
 
 		numPlays = input('Enter the number of plays you would like to generate or "Q" to quit:')
 
@@ -104,6 +107,11 @@ def style_script():
 					if total_percentage == 100:
 						break
 
+					else:
+						input('\nThe total percentage did not add up to 100. Press ENTER to try again.')
+						value_error_check = 0
+						break
+
 
 				except ValueError:
 					input('\nOne of the selections entered was not a number. Please press ENTER to try again.')
@@ -113,7 +121,49 @@ def style_script():
 			if value_error_check == 0:
 				continue
 
-			input('Error stop check')
+			counter = 1
+			''' error testing
+			run_count = 0
+			pass_count = 0
+			option_count = 0
+			'''
+
+			while counter < num + 1:
+
+				playType_selection_text = probability_play_selection(run_percentage_int, pass_percentage_int, option_percentage_int)[0]
+
+				'''error testing
+				input(playType_selection_text)'''
+
+				if playType_selection_text == 'Run':
+					play_selection = random.choice(constants.runList)
+
+				if playType_selection_text == 'Pass':
+					play_selection = random.choice(constants.passList)
+
+				if playType_selection_text == 'Option':
+					play_selection = random.choice(constants.optionList)
+
+				if counter == 1:
+					print("\n")
+
+				print('Play #{}: {}, {}'.format(counter, playType_selection_text, play_selection))
+
+				if counter == num:
+					input('\nPress ENTER to continue.')
+
+				counter += 1
+
+				'''error testing
+				if playType_selection_text == 'Run':
+					run_count += 1
+				if playType_selection_text == 'Pass':
+					pass_count += 1
+				if playType_selection_text == 'Option':
+					option_count += 1
+
+
+			input ('runs: {}, passes: {}, options: {}'.format(run_count, pass_count, option_count))'''
 
 		except ValueError:
 			input('\nThe selection entered did not match any options. Please press ENTER to try again.')
